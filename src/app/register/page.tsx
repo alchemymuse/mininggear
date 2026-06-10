@@ -7,7 +7,8 @@ const MSG: Record<string, string> = {
   exists: "An account with that email already exists. Try signing in.",
 };
 
-export default function RegisterPage({ searchParams }: { searchParams: { error?: string } }) {
+export default async function RegisterPage({ searchParams: searchParamsPromise }: { searchParams: Promise<{ error?: string }> }) {
+  const searchParams = await searchParamsPromise;
   return (
     <>
       <Header />

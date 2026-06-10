@@ -21,7 +21,8 @@ const LISTING_STATUS: Record<string, [string, string]> = {
   delisted: ["s-new", "Delisted"],
 };
 
-export default async function DashboardPage({ searchParams }: { searchParams: { tab?: string } }) {
+export default async function DashboardPage({ searchParams: searchParamsPromise }: { searchParams: Promise<{ tab?: string }> }) {
+  const searchParams = await searchParamsPromise;
   const user = await requireUser();
   const tab = searchParams.tab ?? "listings";
 

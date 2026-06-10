@@ -12,7 +12,8 @@ export const dynamic = "force-dynamic";
 
 type SP = { [k: string]: string | undefined };
 
-export default async function BrowsePage({ searchParams }: { searchParams: SP }) {
+export default async function BrowsePage({ searchParams: searchParamsPromise }: { searchParams: Promise<SP> }) {
+  const searchParams = await searchParamsPromise;
   const user = await getSessionUser();
   const cat = searchParams.cat;
   const q = (searchParams.q ?? "").trim();

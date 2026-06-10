@@ -3,7 +3,8 @@ import Header from "@/components/Header";
 import { loginWithCredentials, loginWithGoogle } from "@/app/auth-actions";
 import { googleEnabled } from "@/auth";
 
-export default function LoginPage({ searchParams }: { searchParams: { error?: string } }) {
+export default async function LoginPage({ searchParams: searchParamsPromise }: { searchParams: Promise<{ error?: string }> }) {
+  const searchParams = await searchParamsPromise;
   return (
     <>
       <Header />

@@ -9,7 +9,8 @@ import { toggleFavorite } from "@/app/actions";
 
 export const dynamic = "force-dynamic";
 
-export default async function ListingPage({ params }: { params: { id: string } }) {
+export default async function ListingPage({ params: paramsPromise }: { params: Promise<{ id: string }> }) {
+  const params = await paramsPromise;
   const user = await getSessionUser();
   const l = await prisma.listing.findUnique({
     where: { id: params.id },
