@@ -70,4 +70,10 @@ export default async function HomePage() {
         </div>
         <div className="grid">
           {featured.map((l) => (
-            <ListingCard key={l.id} l={l} isFav={favIds.has(l.id)} returnT
+            <ListingCard key={l.id} l={l} isFav={favIds.has(l.id)} returnTo="/" />
+          ))}
+        </div>
+      </main>
+    </>
+  );
+}

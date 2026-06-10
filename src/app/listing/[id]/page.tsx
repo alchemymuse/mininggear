@@ -66,7 +66,7 @@ export default async function ListingPage({ params }: { params: { id: string } }
             </table>
             <div className="seller">
               <div className="row">
-                <div className="savatar">{l.seller.company[0]}</div>
+                <div className="savatar">{(l.seller.company || "?")[0]}</div>
                 <div>
                   <b>{l.seller.company}</b>
                   <div className="meta">Seller · member since 2023</div>
@@ -96,4 +96,20 @@ export default async function ListingPage({ params }: { params: { id: string } }
               </form>
             </div>
             <div className="trust">
- 
+              <span>🛡️ Verified listing</span>
+              <span>📦 Tracked deal requests</span>
+              <span>🔒 Secure messaging</span>
+            </div>
+          </div>
+
+          {l.description && (
+            <div className="desc">
+              <h3>Description</h3>
+              <p>{l.description}</p>
+            </div>
+          )}
+        </div>
+      </main>
+    </>
+  );
+}

@@ -111,4 +111,107 @@ export default function SellForm() {
         </div>
         <div className="field">
           <label>Listing title <span className="req">*</span></label>
-          <input name="title" required value={base.titl
+          <input name="title" required value={base.title} onChange={(e) => setB("title", e.target.value)} placeholder="e.g. Bitmain S21 Pro 234T — 50 units" />
+        </div>
+        <div className="fgrid">
+          <div className="field">
+            <label>Brand</label>
+            <input name="brand" value={base.brand} onChange={(e) => setB("brand", e.target.value)} placeholder="e.g. Bitmain" />
+          </div>
+          <div className="field">
+            <label>Condition <span className="req">*</span></label>
+            <select name="condition" value={base.condition} onChange={(e) => setB("condition", e.target.value)}>
+              <option value="new">New</option>
+              <option value="used">Used / Grade A</option>
+              <option value="refurb">Refurbished</option>
+              <option value="repair">For parts / repair</option>
+            </select>
+          </div>
+        </div>
+        <div className="fgrid">
+          <div className="field">
+            <label>Quantity <span className="req">*</span></label>
+            <input name="quantity" type="number" required value={base.quantity} onChange={(e) => setB("quantity", e.target.value)} placeholder="1" />
+          </div>
+          <div className="field">
+            <label>Price USD (0 = POA)</label>
+            <input name="price" type="number" value={base.price} onChange={(e) => setB("price", e.target.value)} placeholder="0" />
+          </div>
+        </div>
+        <div className="fgrid">
+          <div className="field">
+            <label>State <span className="req">*</span></label>
+            <select name="state" value={base.state} onChange={(e) => setB("state", e.target.value)}>
+              {US_STATES.map((s) => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </div>
+          <div className="field">
+            <label>City <span className="req">*</span></label>
+            <input name="city" required value={base.city} onChange={(e) => setB("city", e.target.value)} placeholder="e.g. Austin" />
+          </div>
+        </div>
+        <div className="field">
+          <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <input type="checkbox" name="shippable" checked={base.shippable} onChange={(e) => setB("shippable", e.target.checked)} />
+            Shippable nationwide
+          </label>
+        </div>
+      </div>
+
+      <div className="fstep">
+        <div className="sh">
+          <span className="sn">4</span>
+          <div><h3>{catName(cat)} specs</h3><div className="substep">Category-specific fields that power structured search</div></div>
+        </div>
+        <div className="fgrid">
+          {fields.map((f) => (
+            <div className="field" key={f.key}>
+              <label>{f.label}</label>
+              {f.options ? (
+                <select name={`spec_${f.key}`} value={specs[f.key] ?? ""} onChange={(e) => setSpecs((s) => ({ ...s, [f.key]: e.target.value }))}>
+                  <option value="">—</option>
+                  {f.options.map((o) => <option key={o} value={o}>{o}</option>)}
+                </select>
+              ) : (
+                <input name={`spec_${f.key}`} value={specs[f.key] ?? ""} onChange={(e) => setSpecs((s) => ({ ...s, [f.key]: e.target.value }))} placeholder={f.placeholder} />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="fstep">
+        <div className="sh">
+          <span className="sn">5</span>
+          <div><h3>Photos</h3><div className="substep">Up to 8 images (JPG, PNG, WebP — max 12 MB each)</div></div>
+        </div>
+        <label className="uploadbox">
+          <span className="e">📸</span>
+          Click or drag photos here
+          <input type="file" name="images" multiple accept="image/*" hidden onChange={onImages} />
+        </label>
+        {previews.length > 0 && (
+          <div className="thumbs" style={{ marginTop: 14 }}>
+            {previews.map((src, i) => (
+              <div key={i} className="thumb-img"><img src={src} alt="" /></div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="fstep">
+        <div className="sh">
+          <span className="sn">6</span>
+          <div><h3>Description</h3><div className="substep">Any additional details, history, or notes for buyers</div></div>
+        </div>
+        <div className="field">
+          <textarea name="description" rows={4} value={base.description} onChange={(e) => setB("description", e.target.value)} placeholder="Operating history, reason for sale, included accessories, shipping notes…" />
+        </div>
+      </div>
+
+      <button className="btn btn-accent btn-lg" style={{ width: "100%", justifyContent: "center", marginTop: 6 }}>
+        Submit for review
+      </button>
+    </form>
+  );
+}

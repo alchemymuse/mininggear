@@ -74,7 +74,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
                 <Link href={`/listing/${l.id}`} className="btn btn-ghost">View</Link>
               </div>
             );
-          }) : <div className="empty"><span className="e">📦</span>No listings yet. Use “Sell equipment” to add one — it’ll go to admin review.</div>
+          }) : <div className="empty"><span className="e">📦</span>No listings yet. Use &quot;Sell equipment&quot; to add one — it&apos;ll go to admin review.</div>
         )}
 
         {tab === "requests" && (
@@ -91,4 +91,19 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
                 <Link href={`/listing/${r.listingId}`} className="btn btn-ghost">View listing</Link>
               </div>
             );
-          }) : <div class
+          }) : <div className="empty"><span className="e">📋</span>No deal requests yet. Browse listings and start a deal request to negotiate directly with sellers.</div>
+        )}
+
+        {tab === "favs" && (
+          favs.length ? (
+            <div className="grid">
+              {favs.map((f) => (
+                <ListingCard key={f.id} l={f.listing} isFav returnTo="/dashboard?tab=favs" />
+              ))}
+            </div>
+          ) : <div className="empty"><span className="e">⭐</span>No saved listings yet. Browse and save listings you&apos;re interested in.</div>
+        )}
+      </main>
+    </>
+  );
+}

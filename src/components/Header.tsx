@@ -32,4 +32,29 @@ export default async function Header({ activeCat }: { activeCat?: string }) {
               <form action={logout}>
                 <button className="btn btn-ghost" title="Sign out">Sign out</button>
               </form>
-            </
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="btn btn-ghost">Sign in</Link>
+              <Link href="/register" className="btn btn-accent">Get started</Link>
+            </>
+          )}
+        </div>
+      </div>
+      <div className="catstrip">
+        <div className="catstrip-in">
+          {CATEGORIES.map((c) => (
+            <Link
+              key={c.id}
+              href={`/browse?cat=${c.id}`}
+              className={`catpill ${activeCat === c.id ? "on" : ""}`}
+            >
+              <span className="ce">{c.emoji}</span>
+              {c.name}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </header>
+  );
+}

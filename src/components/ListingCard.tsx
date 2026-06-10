@@ -73,4 +73,8 @@ export default function ListingCard({
       <form action={toggleFavorite} className="fav-form">
         <input type="hidden" name="listingId" value={l.id} />
         <input type="hidden" name="returnTo" value={returnTo} />
-        <
+        <button className={`fav ${isFav ? "on" : ""}`}>{isFav ? "★" : "☆"}</button>
+      </form>
+    </div>
+  );
+}

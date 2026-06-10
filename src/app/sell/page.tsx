@@ -17,4 +17,12 @@ export default async function SellPage() {
             <h2>List equipment or a site</h2>
             <div className="sub">
               Structured listings power search and matching. Fields marked{" "}
-              <span style={{ color: "var(--accent)" }}>*</span> 
+              <span style={{ color: "var(--accent)" }}>*</span> are required.
+            </div>
+          </div>
+        </div>
+        <SellForm />
+      </main>
+    </>
+  );
+}

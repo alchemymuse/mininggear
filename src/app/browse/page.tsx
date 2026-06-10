@@ -65,7 +65,7 @@ export default async function BrowsePage({ searchParams }: { searchParams: SP })
           <div>
             <h2>{cat ? catName(cat) : "All equipment"}</h2>
             <div className="sub">
-              {q ? `Results for “${q}”` : "Used mining hardware, power gear & sites across the US"}
+              {q ? `Results for "${q}"` : "Used mining hardware, power gear & sites across the US"}
             </div>
           </div>
         </div>
@@ -86,4 +86,10 @@ export default async function BrowsePage({ searchParams }: { searchParams: SP })
               <div className="empty">
                 <span className="e">🔍</span>No listings match these filters. Try widening your search.
               </div>
-         
+            )}
+          </div>
+        </div>
+      </main>
+    </>
+  );
+}
