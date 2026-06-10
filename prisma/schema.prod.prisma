@@ -1,0 +1,140 @@
+// PRODUCTION schema (PostgreSQL). Keep these models in sync with schema.prisma
+// (the dev SQLite schema) — only the datasource block differs.
+// Used by: prisma generate/migrate --schema=prisma/schema.prod.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")  // pooled connection (e.g. Neon pooler / Supabase pgbouncer)
+  directUrl = env("DIRECT_URL")    // direct connection for migrations
+}
+
+// ---------- Auth.js (NextAuth) ----------
+
+model User {
+  id            String         @id @default(cuid())
+  name          String?
+  email         String         @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  role          String         @default("seller")
+  company       String         @default("")
+  phone         String?
+  verified      Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  accounts      Account[]
+  sessions      Session[]
+  listings      Listing[]
+  requests      MatchRequest[] @relation("buyer")
+  favorites     Favorite[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ---------- Marketplace ----------
+
+model Listing {
+  id          String         @id @default(cuid())
+  sellerId    String
+  seller      User           @relation(fields: [sellerId], references: [id])
+  category    String
+  title       String
+  brand       String?
+  condition   String         @default("used")
+  quantity    Int            @default(1)
+  price       Float          @default(0)
+  unit        String         @default("/unit")
+  state       String
+  city        String
+  shippable   Boolean        @default(true)
+  status      String         @default("pending")
+  rejectNote  String?
+  featured    Boolean        @default(false)
+  description String         @default("")
+  createdAt   DateTime       @default(now())
+  specs       ListingSpec[]
+  images      ListingImage[]
+  requests    MatchRequest[]
+  favorites   Favorite[]
+
+  @@index([category])
+  @@index([state])
+  @@index([status])
+}
+
+model ListingSpec {
+  id        String  @id @default(cuid())
+  listingId String
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  key       String
+  value     String
+  sort      Int     @default(0)
+}
+
+model ListingImage {
+  id        String  @id @default(cuid())
+  listingId String
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  url       String
+  sort      Int     @default(0)
+}
+
+model MatchRequest {
+  id          String   @id @default(cuid())
+  listingId   String
+  listing     Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  buyerId     String
+  buyer       User     @relation("buyer", fields: [buyerId], references: [id])
+  intentQty   Int      @default(1)
+  targetPrice Float    @default(0)
+  deliverTo   String   @default("")
+  message     String   @default("")
+  status      String   @default("new")
+  createdAt   DateTime @default(now())
+}
+
+model Favorite {
+  id        String  @id @default(cuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  listingId String
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, listingId])
+}

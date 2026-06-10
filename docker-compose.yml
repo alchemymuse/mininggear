@@ -1,0 +1,19 @@
+# Optional: a local Postgres for testing the production schema/migrations.
+#   docker compose up -d
+#   DATABASE_URL="postgresql://mininggear:mininggear@localhost:5432/mininggear"
+#   DIRECT_URL="postgresql://mininggear:mininggear@localhost:5432/mininggear"
+#   npm run prod:deploy && npm run prod:seed
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: mininggear
+      POSTGRES_PASSWORD: mininggear
+      POSTGRES_DB: mininggear
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:
