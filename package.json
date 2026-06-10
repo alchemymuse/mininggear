@@ -16,4 +16,4 @@
     "prod:migrate": "prisma migrate dev --schema=prisma/schema.prod.prisma",
     "prod:deploy": "prisma migrate deploy --schema=prisma/schema.prod.prisma",
     "prod:seed": "prisma generate --schema=prisma/schema.prod.prisma && tsx prisma/seed.ts",
-    "vercel-build": "prisma generate --schema=prisma/schema.prod.prisma && prisma migrate deploy --schema=prisma/schema.prod.prisma && next
+    "vercel-build": "prisma generate --schema=prisma/schema.prod.prisma && [ -z \"$DATABASE_URL\" ] || prisma migrate deploy --schema=prisma/schema.prod.prisma && next build"
